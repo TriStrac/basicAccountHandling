@@ -1,0 +1,13 @@
+if you dont want to run VsCode in order to access the api follow this:
+
+*open build.bat first wait for it to close.
+
+*open run.bat
+
+NOTE: make sure you have java runtime and maven
+
+java: https://download.oracle.com/java/21/archive/jdk-21.0.1_windows-x64_bin.msi
+
+maven: https://dlcdn.apache.org/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.zip
+
+after using the api, you can delete the folder named "target" to free up space
