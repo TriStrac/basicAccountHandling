@@ -81,12 +81,7 @@ public class AccountsController {
         }
 
         if(!isValidPassword(password)){
-            response.put("Message", "Password must have: ");
-            response.put("Message", "   At least 8 characters long");
-            response.put("Message", "   Contains at least one uppercase letter");
-            response.put("Message", "   Contains at least one lowercase letter");
-            response.put("Message", "   Contains at least one digit");
-            response.put("Message", "   Contains at least one special character");
+            response.put("Message", "Password must have: At least 8 characters long, at least one uppercase letter,  at least one lowercase letter, at least one digit, at least one special character");
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -96,7 +91,8 @@ public class AccountsController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
         
-        if(userDTO.getEmail().equals(findAccRepo.findByEmail(userDTO.getEmail()).get(0).getEmail())){
+        List<UserAccount> existingAccounts = findAccRepo.findByEmail(email);
+        if (!existingAccounts.isEmpty() && existingAccounts.get(0).getEmail().equals(email)) {
             response.put("Message", "Account with the email already exists");
             return ResponseEntity.badRequest().body(response);
         }
