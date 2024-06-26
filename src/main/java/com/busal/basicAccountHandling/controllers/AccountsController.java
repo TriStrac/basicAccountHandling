@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.busal.basicAccountHandling.DataTransferObject.UserDTO;
+import com.busal.basicAccountHandling.models.LoginDetail;
 import com.busal.basicAccountHandling.models.UserAccount;
 import com.busal.basicAccountHandling.repository.*;
 
@@ -16,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.tomcat.jni.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +54,9 @@ public class AccountsController {
 
     @Autowired
     FindAccountRepository findAccRepo;
-
+    
+    @Autowired
+    private ModelMapper modelMapper;
 
     @ApiIgnore
     @RequestMapping(value="/")
@@ -60,7 +64,7 @@ public class AccountsController {
         response.sendRedirect("/swagger-ui.html");
     }
 
-    @GetMapping("/accounts")
+    @GetMapping("/displayAllAccounts")
     public List<UserAccount> getAllAccounts(){
         return accRepo.findAll();
     }
@@ -74,7 +78,6 @@ public class AccountsController {
         if(!isValidEmail(email)){
             response.put("Message", "Invalid Email Format");
             return ResponseEntity.badRequest().body(response);
-            
         }
 
         if(!isValidPassword(password)){
@@ -93,7 +96,6 @@ public class AccountsController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
         
-
         if(userDTO.getEmail().equals(findAccRepo.findByEmail(userDTO.getEmail()).get(0).getEmail())){
             response.put("Message", "Account with the email already exists");
             return ResponseEntity.badRequest().body(response);
@@ -126,6 +128,18 @@ public class AccountsController {
         }
     }
 
+    @PutMapping("/updateAccount/{email}")
+    public ResponseEntity<String> updateUser(@PathVariable String email, @Valid @RequestBody UserDTO updateUserRequest) {
+        UserAccount existingUser = accRepo.findByEmail(email);
+        if (existingUser != null) {
+            modelMapper.map(updateUserRequest, existingUser);
+            accRepo.save(existingUser);
+            return ResponseEntity.ok("User account updated successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User account not found");
+        }
+    }
+
     @GetMapping("/findAccount")
     public ResponseEntity<Object> findAccount(@RequestParam String email) {
         List<UserAccount> accounts = findAccRepo.findByEmail(email);
@@ -137,10 +151,10 @@ public class AccountsController {
     }
 
     @PostMapping("/loginAccount")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, String> loginData) {
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody LoginDetail loginDetail) {
 
-        String email = loginData.get("email");
-        String password = loginData.get("password");
+        String email = loginDetail.getEmail();
+        String password = loginDetail.getPassword();
 
         Map<String, String> response = new HashMap<>();
 

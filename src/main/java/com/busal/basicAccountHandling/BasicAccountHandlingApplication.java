@@ -1,5 +1,6 @@
 package com.busal.basicAccountHandling;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,12 @@ public class BasicAccountHandlingApplication {
 		final ApiInfoBuilder builder = new ApiInfoBuilder();
 		return builder.build();
 	}
+
+	@Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+	
 	public static void main(String[] args) {
 		SpringApplication.run(BasicAccountHandlingApplication.class, args);
 	}
