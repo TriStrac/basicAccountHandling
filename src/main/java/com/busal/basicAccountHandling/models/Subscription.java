@@ -1,5 +1,7 @@
 package com.busal.basicAccountHandling.models;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "subscriptionsAquaroute")
 public class Subscription {
     private String customerEmail;
     private String stationEmail;

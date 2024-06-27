@@ -137,6 +137,7 @@ public class AccountsController {
         UserAccount existingUser = accRepo.findByEmail(updateUserRequest.getEmail());
         if (existingUser != null) {
             modelMapper.map(updateUserRequest, existingUser);
+            accRepo.deleteByEmail(existingUser.getEmail());
             accRepo.save(existingUser);
             return ResponseEntity.ok("User account updated successfully");
         } else {
@@ -144,7 +145,7 @@ public class AccountsController {
         }
     }
 
-    @GetMapping("/findAccount")
+    @GetMapping("/findAccountByEmail")
     public ResponseEntity<Object> findAccount(@RequestParam String email) {
         List<UserAccount> accounts = findAccRepo.findByEmail(email);
         if (email.equals(accounts.get(0).getEmail())) {
@@ -182,72 +183,4 @@ public class AccountsController {
             return ResponseEntity.badRequest().body(response);
         }
     }
-
-    @PostMapping("/createSubscription")
-    public Subscription createSubscription(@RequestBody Subscription subscription){
-        return subscriptionRepo.save(subscription);
-    }
-
-    @GetMapping("/displayAllSubscriptions")
-    public List<Subscription> getAllSubscriptions(){
-        return subscriptionRepo.findAll();
-    }
-
-    @DeleteMapping("/deleteSubscriptionByEmail/{email}")
-    public ResponseEntity<String> deleteSubscriptionByEmail(@PathVariable String email) {
-        if (subscriptionRepo.existsByEmail(email)) {
-            subscriptionRepo.deleteByEmail(email);
-            return ResponseEntity.ok("User subscription deleted successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User subscription not found");
-        }
-    }
-
-    @PutMapping("/updateUserSubscription/{email}")
-    public ResponseEntity<String> updateUserSubscription(@RequestBody Subscription updateUserRequest) {
-        Subscription existingUser = subscriptionRepo.findByEmail(updateUserRequest.getCustomerEmail());
-        if (existingUser != null) {
-            modelMapper.map(updateUserRequest, existingUser);
-            subscriptionRepo.save(existingUser);
-            return ResponseEntity.ok("User subscription updated successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User subscription not found");
-        }
-    }
-
-    @PostMapping("/createInventory")
-    public Inventory createInventory(@RequestBody Inventory inventory){
-        return inventoryRepo.save(inventory);
-    }
-
-    @GetMapping("/displayAllInventory")
-    public List<Inventory> getAllInventory(){
-        return inventoryRepo.findAll();
-    }
-
-    @DeleteMapping("/deleteInventoryByEmail/{email}")
-    public ResponseEntity<String> deleteInventoryByEmail(@PathVariable String email) {
-        if (inventoryRepo.existsByEmail(email)) {
-            inventoryRepo.deleteByEmail(email);
-            return ResponseEntity.ok("User inventory deleted successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User inventory not found");
-        }
-    }
-
-    @PutMapping("/updateUserInventory/{email}")
-    public ResponseEntity<String> updateUserInventory(@RequestBody Inventory updateUserRequest) {
-        Inventory existingUser = inventoryRepo.findByEmail(updateUserRequest.getUserEmail());
-        if (existingUser != null) {
-            modelMapper.map(updateUserRequest, existingUser);
-            inventoryRepo.save(existingUser);
-            return ResponseEntity.ok("User inventory updated successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User inventory not found");
-        }
-    }
-
-    
-
-
 }

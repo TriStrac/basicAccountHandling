@@ -1,8 +1,10 @@
 package com.busal.basicAccountHandling.models;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "inventoryAquaroute")
 public class Inventory {
     private String userEmail;
-    private Float gallons;
+    private String gallons;
 
     
     public Inventory() {
@@ -14,10 +16,10 @@ public class Inventory {
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
-    public Float getGallons() {
+    public String getGallons() {
         return gallons;
     }
-    public void setGallons(Float gallons) {
+    public void setGallons(String gallons) {
         this.gallons = gallons;
     }
 }
