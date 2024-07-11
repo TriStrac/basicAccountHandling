@@ -14,13 +14,14 @@ public class UserAccount {
     private String province;
     private String email;
     private String password;
+    private String type;
 
     public UserAccount(){
 
     }
 
     public UserAccount(String firstName, String lastName, String middleName, String birthdate, String street,
-            String barangay, String city, String province, String email, String password) {
+            String barangay, String city, String province, String email, String password, String type) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -31,6 +32,7 @@ public class UserAccount {
         this.province = province;
         this.email = email;
         this.password = password;
+        this.type = type;
     }
 
     public String getFirstName() {
@@ -93,5 +95,11 @@ public class UserAccount {
     public void setPassword(String password) {
         this.password = password;
     } 
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
 
 }

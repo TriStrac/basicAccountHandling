@@ -33,6 +33,8 @@ public class UserDTO {
     @NotBlank(message = "Province is required")
     private String province;
 
+    private String type;
+
 
     public String getFirstName() {
         return firstName;
@@ -112,5 +114,13 @@ public class UserDTO {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

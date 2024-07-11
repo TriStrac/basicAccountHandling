@@ -116,6 +116,7 @@ public class AccountsController {
         userAccount.setPassword(userDTO.getPassword());
         userAccount.setProvince(userDTO.getProvince());
         userAccount.setStreet(userDTO.getStreet());
+        userAccount.setType(userDTO.getType());
 
         accRepo.save(userAccount);
         response.put("Message", "Account created successfully");
