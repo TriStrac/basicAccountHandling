@@ -43,7 +43,7 @@ public class AccountsController {
         "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
-        "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+        "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[~!@#$%^&*()\\-_=+\\[\\]{}\\\\|;:'\",<.>/?])[A-Za-z\\d~!@#$%^&*()\\-_=+\\[\\]{}\\\\|;:'\",<.>/?]{8,}$");
 
     private boolean isValidEmail(String email) {
         return EMAIL_PATTERN.matcher(email).matches();
