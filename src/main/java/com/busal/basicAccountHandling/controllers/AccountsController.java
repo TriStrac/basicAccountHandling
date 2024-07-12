@@ -170,18 +170,22 @@ public class AccountsController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        UserAccount user = findAccRepo.findByEmail(email).get(0);
-
-        if (user != null) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                response.put("Message", "Log in successfully");
-                return ResponseEntity.ok(response);
-            } else {
-                response.put("Message", "Invalid Credentials");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        try{
+            UserAccount user = findAccRepo.findByEmail(email).get(0);
+            if (user != null) {
+                if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                    response.put("Message", "Log in successfully");
+                    return ResponseEntity.ok(response);
+                } else {
+                    response.put("Message", "Invalid Credentials");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+                }
+            }else{
+                response.put("Message", "Incorrect Email or Password");
+                return ResponseEntity.badRequest().body(response);
             }
-        }else{
-            response.put("Message", "Incorrect Email or Password");
+        }catch(Exception e){
+            response.put("Message", "User does not exist");
             return ResponseEntity.badRequest().body(response);
         }
     }
